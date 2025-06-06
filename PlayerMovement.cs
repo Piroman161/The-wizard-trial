@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
 public class PlayerMovement : MonoBehaviour
 {
     private CharacterController controller;

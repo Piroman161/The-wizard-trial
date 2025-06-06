@@ -22,23 +22,38 @@ public class Throwable : MonoBehaviour
 
     private void Start()
     {
-        countdown = delay;
+        // Не запускаем таймер автоматически
+        // countdown = delay; // убрано
     }
 
     private void Update()
     {
-        countdown -= Time.deltaTime;
-        if (countdown <= 0f && !hasExploded)
+        if (hasBeenThrown)
         {
-            Explode();
-            hasExploded = true;
+            countdown -= Time.deltaTime;
+            if (countdown <= 0f && !hasExploded)
+            {
+                Explode();
+                hasExploded = true;
+            }
+        }
+    }
+
+    public void Throw(Vector3 throwDirection, float throwForce)
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false; // убедитесь, что это значение установлено
+            rb.AddForce(throwDirection * throwForce, ForceMode.VelocityChange);
+            hasBeenThrown = true;
+            countdown = delay; // запустите таймер
         }
     }
 
     private void Explode()
     {
         GetThrowableEffect();
-
         Destroy(gameObject);
     }
 
@@ -64,6 +79,13 @@ public class Throwable : MonoBehaviour
             if (rb != null)
             {
                 rb.AddExplosionForce(explosionForce, transform.position, damageRadis);
+            }
+
+            // Проверяем наличие компонента Enemy и вызываем его метод TakeDamage
+            Enemy enemyComponent = objectInRange.GetComponent<Enemy>();
+            if (enemyComponent != null)
+            {
+                enemyComponent.TakeDamage(100); // урон можете изменить по желанию
             }
         }
     }

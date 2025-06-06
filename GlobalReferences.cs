@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class GlobalReferences : MonoBehaviour
 {
-    public static GlobalReferences Instance { get; set; }
+    public static GlobalReferences Instance { get; set; } // Singleton для глобального доступа
 
-    public GameObject bulletImpactEffectPrefab;
-
-    public GameObject grenadeExplosionEffect;
-
-
+    public GameObject bulletImpactEffectPrefab; // Префаб эффекта при ударе пули
+    public GameObject grenadeExplosionEffect; // Эффект взрыва гранаты
 
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        // Реализация Singleton
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
